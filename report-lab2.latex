@@ -1,0 +1,166 @@
+\documentclass{article}
+\usepackage[a4paper, margin=1in]{geometry}
+
+%Russian-specific packages
+%--------------------------------------
+\usepackage[tuenc]{fontspec}%for lualatex case
+\usepackage[T2A]{fontenc}
+\usepackage[utf8x]{inputenc}
+\usepackage{indentfirst}
+% \usepackage[english,russian]{babel} 
+\setsansfont{CMU Sans Serif}%{Arial}
+\setmainfont{CMU Serif}%{Times New Roman}
+\setmonofont{CMU Typewriter Text}%{Consolas}
+
+\usepackage{tikz}
+\usepackage{minted}
+% \usepackage{algoflowchart}      % <-- this is a local package, and I am the author 
+\usepackage{graphicx}
+\usetikzlibrary{automata, positioning, arrows}
+\usemintedstyle{borland}
+
+\renewcommand{\familydefault}{\rmdefault}
+\def\requiredField#1{\textcolor{red}{#1}}
+
+\begin{document}
+\begin{titlepage}
+    \begin{center}
+«Национальный исследовательский университет ИТМО»
+    \end{center}
+
+    \vfill
+    \begin{center}
+        
+        \textbf{\huge
+            Лабораторная работа №2 по дисциплину
+            "Функциональная схемотехника"
+        } \\
+        \medskip
+        Разработка аппаратных ускорителей математических вычислений
+
+    \end{center}
+
+    \vfill
+
+    \begin{flushright}
+        Выполнил: Чан Куанг Лок\\
+        Группа: P33011
+    \end{flushright}
+
+    \begin{center}
+        Санкт-Петербург\\ 2021 г
+    \end{center}
+\end{titlepage}
+
+\section{Цель работы}
+Получить навыки описания арифметических блоков на RTL-уровне с использованием языка описания
+аппаратуры Verilog HDL.
+
+\section{Описание задания}
+Лабораторная работа посвящена знакомству с техниками описания схем арифметических блоков на 
+RTL-уровне с использованием языка Verilog HDL. Работа выполняется в Vivado Design Suite.
+
+Задания по вариантам
+
+\begin{tabular}{|c|c|c|}
+    \hline
+    № варианта & Функция & Органичение \\
+    \hline
+    3 & $\sqrt{a^2 + b^2}$ & 1 суммаратор и 2 умнотеля \\
+    \hline
+\end{tabular}
+
+\subsection{Комментарии к заданиям}
+В качестве входных данных необходимо использовать целые беззнаковые числа с разрядностью 8 бит.
+
+При выполнении заданий необходимо использовать беззнаковую целочисленную
+арифметику.
+
+\section{Выполнение}
+\subsection{Схему (рисунок) разработанного блока вычисления функции}
+\includegraphics[width=\textwidth]{./images/device-diagram.png}
+Здесь устройство управления принимает некоторые входные данные (clk, rst, start  ...) для определения состояния; управления входов для блоков, предоставляя селектор мультиплексорам; котролизации присвоенного значения регистрам. Остальные блоки закладываются как используемые в функции.
+
+\subsection{Описание работы разработанного блока}
+Блок работает согласно алгоритму вычисления квадратного корни, описывая в методичке.
+
+Для реализования, блок работает согласно следующему конечному автомату.
+\tikzset{
+    ->,  % makes the edges directed
+    >=stealth', % makes the arrow heads bold
+    node distance=4cm, % specifies the minimum distance between two nodes. Change if necessary
+    .every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+    initial text=$ $, % sets the text that appears on the start arrow
+}
+
+\begin{tikzpicture}
+    \node[state, initial] (idle) {IDLE};
+    \node[state, right of=idle] (cal-square) {CS};
+    \node[state, right of=cal-square] (cal-sqrt-start) {CSS};
+    \node[state, below of=cal-sqrt-start](cal-sqrt-check-and-update-result) {CSCAUR};
+    \node[state, left of=cal-sqrt-check-and-update-result] (cal-sqrt-loop) {CSL};
+    
+    \draw (idle) edge[loop above] node{!start\_i} (idle);
+    \draw (idle) edge[above] node{start\_i} (cal-square);
+    \draw (cal-square) edge[loop above] node{!done\_cal\_square} (cal-square);
+    \draw (cal-square) edge[above] node{done\_cal\_square} (cal-sqrt-start);
+    \draw (cal-sqrt-start) edge[] (cal-sqrt-loop);
+    \draw (cal-sqrt-loop) edge[bend left, above] node{m > 0} (cal-sqrt-check-and-update-result);
+    \draw (cal-sqrt-loop) edge[above] node{m == 0} (idle);
+    \draw (cal-sqrt-check-and-update-result) edge[bend left, below] node{} (cal-sqrt-loop);
+\end{tikzpicture}
+
+Сокращения названий штатов и их предназначение: \begin{itemize}
+    \item IDLE - idle: ждать сигнал start, или отдыхать после расчета.
+    \item CS - CAL\_SQUARE: ждать вычисление $a^2$ и $b^2$.
+    \item CSS - CAL\_SQRT\_START: суммировать $a^2 + b^2$, поместить несколько начальных значенией.
+    \item CSL - CAL\_SQRT\_LOOP: решить окончание цикла вычисления или обновление ответа.
+    \item CSCAUR - CAL\_SQRT\_CHECK\_AND\_UPDATE\_RESULT: обновить ответ.
+\end{itemize}
+
+Переходы: \begin{itemize}
+    \item start\_i и !start\_i - сушествование или отсуствие сигнала start\_i.
+    \item done\_cal\_square - определяется в реализации как (!a\_square\_busy \& !b\_square\_busy),
+        где a\_square\_busy и b\_square\_busy - сигналы, которые показывают, ещё работают ли множители 
+        для $a^2$ и $b^2$ соответственно.
+    \item $m > 0$ и $m == 0$ - условия, описанные в алгоритма.
+\end{itemize}
+
+\subsection{Область допустимых значений для разработанного блока.}
+Для входного параметра - 8-битные неотрицательные целые числа в области $[0, 256)$.
+
+Для выхода - 9-битные неотрицательные целые числа в области $[0, 360]$.
+
+\subsection{Результат тестирования разработанного блока}
+В диаграмме: \begin{itemize}
+    \item $clk$ - тактовый сигнал
+    \item $busy$ - 1 если блок не закончит работу, 0 иначе.
+    \item $rst$ - для сбора блоки.
+    \item $start$ - сигнал для начала работы блока.
+    \item $a, b$ - входные параметры.
+    \item $y$ - вход.
+    \item $expected$ - ожидание разультата теста.
+\end{itemize}
+\subsubsection{Временный диаграм для всех тестов}
+\includegraphics[width=\linewidth]{images/sim-test-diagram-all.png}
+\subsubsection{Временный диаграм для теста (a = 3, b = 4)}
+\includegraphics[width=\linewidth]{images/sim-test-diagram-1-test.png}
+\subsubsection{Содержание log-выхода}
+\inputminted[fontsize=\footnotesize]{text}{test-log.txt}  
+
+\subsection{Время вычисления результата при частоте тактового сигнала в 100 МГц}
+Тестирование показало, что для каждого теста, блок работает за 33 задержки. Для 100 МГц, 1 задержки
+равняется 5 нс. Следует то, что блок работает за $33 \times 5 = 165$ (нс).
+
+\section{Вывод}
+При выпольнению лабораторной работы я использовал поведенческий синтаксис вместо структурного для описания блока. Используя синтаксис, я могу видеть, что Verilog HDL действительно демонстрирует свою мощь при написании блока, а также в части планирования и оптимизации, выполняемой компьютером. Так что часть процесса намного проще. Второе, что я сделал, - это преобразовал алгоритм в конечный автомат. Это действительно похоже на нормальное программирование, потому что мы также разбиваем его на шаги, один раз за один. Но это не потому, что за один шаг мы можем делать больше вещей параллельно, а также вещи не идут последовательно за один раз. Поэтому мне пришлось уделять больше внимания тому, что нужно делать.
+
+\end{document}
+
+% listing code with:
+%    \inputminted[fontsize=\footnotesize]{lang}{realtive-or-absolute-dir}  
+
+% insert image
+%    \includegraphics[width=3cm, height=4cm]{img_path}
+% vim: wrap
+

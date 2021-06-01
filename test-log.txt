@@ -1,0 +1,56 @@
+t           0
+a =  36, b =   0, expected =  36
+Answer =  36
+passed
+Step count =          33
+Test           1
+a =   1, b =   0, expected =   1
+Answer =   1
+passed
+Step count =          33
+Test           2
+a =   0, b =   0, expected =   0
+Answer =   0
+passed
+Step count =          33
+Test           3
+a =  40, b =  30, expected =  50
+Answer =  50
+passed
+Step count =          33
+Test           4
+a = 123, b = 234, expected = 264
+Answer = 264
+passed
+Step count =          33
+Test           5
+a = 200, b = 100, expected = 223
+Answer = 223
+passed
+Step count =          33
+Test           6
+a =  10, b =  20, expected =  22
+Answer =  22
+passed
+Step count =          33
+Test           7
+a = 255, b = 255, expected = 360
+Answer = 360
+passed
+Step count =          33
+Test           8
+a =  12, b =   5, expected =  13
+Answer =  13
+passed
+Step count =          33
+Test           9
+a =   5, b =  12, expected =  13
+Answer =  13
+passed
+Step count =          33
+Test          10
+a =   3, b =   4, expected =   5
+Answer =   5
+passed
+Step count =          33
+Finished test

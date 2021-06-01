@@ -1,0 +1,10 @@
+0.6
+2019.1
+May 24 2019
+14:51:52
+/home/P33011_12/lab2/lab2.sim/sim_1/behav/xsim/glbl.v,1558713910,verilog,,,,glbl,,,,,,,,
+/home/P33011_12/lab2/lab2.srcs/sim_1/new/my_func_sim.v,1617735551,systemVerilog,,,,my_func_sim,,,,,,,,
+/home/P33011_12/lab2/lab2.srcs/sim_1/new/sim_sum.v,1617724166,verilog,,,,sim_sum,,,,,,,,
+/home/P33011_12/lab2/lab2.srcs/sources_1/new/mult.v,1617728025,verilog,,/home/P33011_12/lab2/lab2.srcs/sources_1/new/my_func.v,,mult,,,,,,,,
+/home/P33011_12/lab2/lab2.srcs/sources_1/new/my_func.v,1617727020,verilog,,/home/P33011_12/lab2/lab2.srcs/sources_1/new/sum.v,,my_func,,,,,,,,
+/home/P33011_12/lab2/lab2.srcs/sources_1/new/sum.v,1617726417,verilog,,/home/P33011_12/lab2/lab2.srcs/sim_1/new/my_func_sim.v,,sum,,,,,,,,

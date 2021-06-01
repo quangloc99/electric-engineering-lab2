@@ -1,0 +1,48 @@
+Vivado Simulator 2019.1
+Time resolution is 1 ps
+Test           0
+a =  36, b =   0, expected =  36
+Answer =  36
+passed
+Test           1
+a =   1, b =   0, expected =   1
+Answer =   1
+passed
+Test           2
+a =   0, b =   0, expected =   0
+Answer =   0
+passed
+Test           3
+a =  40, b =  30, expected =  50
+Answer =  50
+passed
+Test           4
+a = 123, b = 234, expected = 264
+Answer = 264
+passed
+Test           5
+a = 200, b = 100, expected = 223
+Answer = 223
+passed
+Test           6
+a =  10, b =  20, expected =  22
+Answer =  22
+passed
+Test           7
+a = 255, b = 255, expected = 360
+Answer = 360
+passed
+Test           8
+a =  12, b =   5, expected =  13
+Answer =  13
+passed
+Test           9
+a =   5, b =  12, expected =  13
+Answer =  13
+passed
+Test          10
+a =   3, b =   4, expected =   5
+Answer =   5
+passed
+Finished test
+$finish called at time : 3740 ns : File "/home/P33011_12/lab2/lab2.srcs/sim_1/new/my_func_sim.v" Line 61

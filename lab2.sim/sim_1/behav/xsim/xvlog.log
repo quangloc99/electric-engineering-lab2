@@ -1,0 +1,8 @@
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/P33011_12/lab2/lab2.srcs/sources_1/new/mult.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module mult
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/P33011_12/lab2/lab2.srcs/sources_1/new/my_func.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module my_func
+INFO: [VRFC 10-2263] Analyzing Verilog file "/home/P33011_12/lab2/lab2.srcs/sources_1/new/sum.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module sum
+INFO: [VRFC 10-2263] Analyzing SystemVerilog file "/home/P33011_12/lab2/lab2.srcs/sim_1/new/my_func_sim.v" into library xil_defaultlib
+INFO: [VRFC 10-311] analyzing module my_func_sim
